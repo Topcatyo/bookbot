@@ -24,6 +24,13 @@ def get_word_count(book):
     words = text.split()
     return len(words)
 
-
+def get_character_counts(words):
+    
+    #!!!!!!!!!   TO DO LIST   !!!!!!!!!
+    #0. Convert entire book to lowercase
+    #1. Create dictionary of each letter
+    #2. For a for loop on each character with a comparison that adds to a counter
+    #3. Return each counter
+    #4. Prettify all the outputs, even the commented out ones
 
 main()
