@@ -1,8 +1,7 @@
 def main():
     # user chooses book from directory if interactive
-    book_title = "Frankenstein"
+    book_title = "Frankenstein by Mary Shelley"
     chosen_book = f"books/{book_title}.txt"
-
 
     # book  text is printed
     text = get_book(chosen_book)
@@ -11,16 +10,19 @@ def main():
     #get word count
     word_count = get_word_count(text)[0]
     #get character counts
-    letter_count = get_character_counts(text)
+    letter_count, formatted_letter_count = count_letters(text)
     
     #print assignment junk
-    print(f"This is the story {book_title}")
-    print("Some stats:")
+    print(f"You have chosen the book {book_title}")
+    print("But first, some statistics!")
     print(f"This book has {word_count} words.")
     print("Here is every instance of every letter in the book:")
-    print(format_letter_counts(letter_count))
+    print(formatted_letter_count)
     print("Anyways, here's the book!")
     #print(text)
+
+
+###########################################
 
 
 def get_book(chosen_book):
@@ -35,31 +37,40 @@ def get_word_count(book):
     return len(indiv_words), indiv_words
 
 
-def get_character_counts(book):
-    unsorted = {}
-    letters = {}
+import string
 
-    for char in book.lower():
+def count_letters(text):
+    def format_letter_counts(letter_count, letters_per_line=7):
+        result = []
+        item_width = 10  # Width for each "LETTER: COUNT" item
+        total_width = (item_width + 2) * letters_per_line  # +2 for the "  |  " separator
+
+        result.append("-" * total_width)  # Just the hyphen line
+        
+        line = []
+        for i, (letter, count) in enumerate(sorted(letter_count.items()), 1):
+            line.append(f"{letter.upper()}: {count:6}")
+            if i % letters_per_line == 0:
+                result.append("  |  ".join(line))
+                line = []
+        
+        if line:  # Add any remaining items
+            result.append("  |  ".join(line))
+        
+        return "\n".join(result)
+
+    # Initialize a dictionary with all lowercase letters set to 0
+    letter_counts = {letter: 0 for letter in string.ascii_lowercase}
+    
+    # Count the letters in the text
+    for char in text.lower():
         if char.isalpha():
-            unsorted[char] = unsorted.get(char, 0) +1
-
-    letters = dict(sorted(unsorted.items()))
-    return letters
-
-def format_letter_counts(letter_count, letters_per_line=7):
-    result = []
-    header = "Letter: Count  "
-    result.append((header).rstrip())
-    result.append("-" * (len(header) * letters_per_line))
+            letter_counts[char] += 1
     
-    for i, (letter, count) in enumerate(letter_count.items(), 1):
-        result.append(f"{letter.upper()}: {count:6}")
-        if i % letters_per_line == 0:
-            result.append("\n")
-        elif i < len(letter_count):
-            result.append("  |  ")
+    # Format the letter counts
+    formatted_counts = format_letter_counts(letter_counts)
     
-    return "".join(result)
+    return letter_counts, formatted_counts
 
 
 main()
