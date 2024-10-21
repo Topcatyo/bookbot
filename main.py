@@ -3,7 +3,7 @@ def main():
     book_title = "Frankenstein by Mary Shelley"
     chosen_book = f"books/{book_title}.txt"
 
-    # book  text is printed
+    # book text is printed
     text = get_book(chosen_book)
 
     #-------- ASSIGNMENTS -------
@@ -19,7 +19,7 @@ def main():
     print("Here is every instance of every letter in the book:")
     print(formatted_letter_count)
     print("Anyways, here's the book!")
-    #print(text)
+    print(text)
 
 
 ###########################################
